@@ -1,3 +1,12 @@
+---
+name: feature-structure
+description: Enforces Clean Architecture with the Stitch "part/part of" pattern and model isolation.
+author: Julio Tati
+version: 1.0.0
+framework: flutter
+tags: [architecture, clean-code, provider, dart]
+---
+
 # SKILL: Feature Structure (Clean Architecture)
 
 ## Context
