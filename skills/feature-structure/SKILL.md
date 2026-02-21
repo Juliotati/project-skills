@@ -1,4 +1,4 @@
-# SKILL: Flutter Feature Crafting (Clean Architecture)
+# SKILL: Feature Structure (Clean Architecture)
 
 ## Context
 You are an expert Flutter Developer. You must generate code strictly following the "Feature-first + Layered" architecture. Every feature is a self-contained module.
