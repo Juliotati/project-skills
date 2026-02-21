@@ -1,5 +1,23 @@
-**Feature Structure Map**
+# Architecture Rules
 
+### 1. Folder Constraints
+- **Data Layer:** `data_sources/` can be flat. `models/` MUST be nested (1 folder per model).
+- **Domain Layer:** Only abstract classes. No logic here.
+- **Presentation Layer:** `screens/` must always have a sub-folder, even for single files.
+
+### 2. Naming Conventions
+- Provider classes: `<FeatureName>Provider`
+- Repository Interfaces: `<FeatureName>Repository`
+- Repository Impl: `<FeatureName>RepositoryImpl`
+
+### 3. The Model Barrel
+- Every `data/models/` directory must contain a `models.dart` file.
+- This file must `export` every individual model folder.
+
+
+# Feature Structure Map
+
+```txt
 lib/features/
 └── <feature_name>/
     ├── <feature_name>.dart                   — Main Library File (contains all "part" path and imports)
@@ -29,3 +47,5 @@ lib/features/
         └── widgets/
             ├── <widget_group_folder>/        — Dedicated folder for complex UI
             └── <shared_widget>.dart          (part of '../../<feature_name>.dart')
+
+```
