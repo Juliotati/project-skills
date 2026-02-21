@@ -31,8 +31,8 @@ Structure every new feature in `lib/features/` as follows:
 ## 2. The "Stitch" Rule (Part/Part Of)
 To maintain a clean namespace while keeping files small:
 - The root `<feature_name>.dart` acts as the orchestrator.
-- **Layers are parts:** All files in `data_sources`, `repository` (impl), `domain/repository`, `providers`, and `screens` must use:
-  `part of '../../<feature_name>.dart';`
+- **Parts:** `data_sources`, `repository` (impl), `domain/repository`, and `screens`.
+- **Independent Files:** `models/` and `providers/`. These must NOT use `part of` and must use standard `imports`.
 - **Root File:** Must declare all components via `part 'path/to/file.dart';`.
 
 ## 3. Model Isolation Protocol
