@@ -45,3 +45,10 @@ To maintain a clean namespace while keeping files small:
 - **Domain:** Pure Dart. Defines the "What" (Abstract Repository).
 - **Data:** Defines the "How". Implements the Repository and handles JSON via Models.
 - **Presentation:** UI and Logic. Providers handle the state, Screens handle the layout.
+
+## 5. Linting & Formatting
+- **Standard:** Every file generated MUST strictly adhere to the rules defined in the `analysis_options.yaml` located at the project root.
+- **Enforcement:**
+    - If `analysis_options.yaml` exists: Read it before generating code to ensure correct linting (e.g., preferred use of `const`, sorting imports, or specific naming conventions).
+    - If `analysis_options.yaml` is MISSING: Explicitly notify the developer: *"Warning: analysis_options.yaml not found. It is highly recommended to create one to maintain code consistency across the feature."*
+- **Formatting:** Always run `dart format .` logic mentally before presenting code to ensure correct indentation and line lengths.
