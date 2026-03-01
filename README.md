@@ -1,20 +1,25 @@
 # Project Skills
 
-A library of Agent Skills designed to work with the MCP server. Each skill follows the Agent Skills open standard, for compatibility with coding agents such as Antigravity, Gemini CLI, Claude Code, Cursor
+A collection of AI-ready skills designed to automate and enforce high-quality Software Engineering standards in Flutter and Dart projects.
 
-# Installation & Discovery
+## 🛠 Available Skills
 
-Install any skill from this repository using the skills CLI. This command will automatically detect your active coding agents and place the skill in the appropriate directory.
+### 1. [Feature Structure (Clean Architecture)](./feature-structure)
+Enforces a "Feature-first" layered architecture. It utilizes the "Stitch" pattern to maintain clean namespaces while ensuring strict separation of concerns.
+* **Core Pattern:** Uses Dart `library` and `part/part of` directives.
+* **Layering:** Separates code into Data (Sources/Models), Domain (Contracts), and Presentation (Providers/Screens).
+* **Model Isolation:** Keeps generated `.freezed.dart` and `.g.dart` files in dedicated sub-folders to prevent directory clutter.
 
+### 2. [Code Quality (Flutter/Dart)](./code-quality)
+Ensures readability, scalability, and performance by enforcing strict widget decomposition and linting rules.
+* **Linter Backbone:** Strictly adheres to the project's `analysis_options.yaml`.
+* **Widget Standards:** Mandates concrete classes over helper functions and enforces a 200-line refactor threshold.
+* **Signature Rules:** Requires named parameters for multi-parameter functions and limits parameter counts (Max 5 for functions, Max 7 for widgets).
+
+## 🚀 How to Use
+
+These skills are designed to be used with AI agents (like Cursor, Gemini CLI, or Claude Code) to guide code generation.
+
+### Installation
 ```bash
-# List all available skills in this repository
-npx skills add juliotati/project-skills --list
-
-# Install a specific skill
-npx skills add juliotati/project-skills --skill feature-structure --global
-```
-
-# Available Skills
-
-### feature-structure
-A modular, feature-first architectural pattern for Flutter applications. This skill enforces a strict separation of concerns by partitioning features into Data, Domain, and Presentation layers, while utilizing Dart’s library and part system to maintain a unified internal namespace.
+npx skills add Juliotati/project-skills --skill <skill-name>
