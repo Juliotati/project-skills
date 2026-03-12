@@ -1,8 +1,8 @@
 ---
 name: golden-eye
-description: Standardizes Flutter golden tests with mirroring rules, granular naming, and multi-device verification.
+description: Standardizes Flutter golden tests with mirroring rules and granular naming for high-fidelity UI verification.
 author: Juliotati
-version: 1.0.0
+version: 1.1.0
 framework: flutter
 tags: [testing, golden-test, ui-verification, design]
 ---
@@ -10,7 +10,7 @@ tags: [testing, golden-test, ui-verification, design]
 # SKILL: Golden Eye (Test Organization & Naming)
 
 ## Objective
-Establish a standardized directory and file-naming convention for all Flutter golden tests in the timeline project. Ensure high-granularity visual verification by mirroring the source structure and separating variants.
+Establish a standardized directory and file-naming convention for all Flutter golden tests in the project. Ensure high-granularity visual verification by mirroring the source structure and separating variants.
 
 ## 1. Directory Mirroring Rule
 Every golden test file must reside in a `test/` directory path that exactly mirrors its `lib/` counterpart.
@@ -35,16 +35,13 @@ Generated golden images must use descriptive, human-readable names specifying ex
 ## 4. Golden Group Layout
 Within each test file, use a **3-column maximum grid layout** for variant comparison (implemented via `GoldenTestGroup` in **Alchemist**). This ensures the output is readable and consistent.
 
-## 5. Device Profiles
-Every variant must be tested against at least the following device profiles (using Samsung S8 and Samsung S23 Ultra profiles as the project standard):
-- **Samsung S8** (Small/Standard)
-- **Samsung S23 Ultra** (Large/Premium)
+## 5. Natural UI Sizing
+Tests should not use restricted bounds (e.g., fixed device profiles). Instead, they should allow the UI being tested to define its own width and height, ensuring the golden image captures the widget in its natural state.
 
 ## 6. Output Folder Organization
-To keep golden files organized across multiple device profiles, use a subfolder naming convention for the output golden file.
-- **Rule:** `<device_name>/<file_name>`
-- **Reasoning:** This keeps different device outputs in separate directories within the `goldens/` folder, preventing clutter and making visual diffing easier.
-- **Example:** `fileName: 's8/discussion_post_without_media'`
+To keep golden files organized, the output golden file should follow the granular naming rule directly in the mirrored folder structure.
+- **Rule:** Mirror the directory structure in `local_goldens/` as defined in the global configuration.
+- **Example:** `fileName: 'app_button_granular_variants'`
 
 ## 7. Global Golden Configuration
 All projects using this skill must define a `test/flutter_test_config.dart` to standardize the **Alchemist** execution environment.

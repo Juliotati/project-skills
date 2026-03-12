@@ -9,7 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 /// 2. Multi-Variant Rule: More than 2 major visual variations? Use separate files.
 /// 3. Granular Names: Use descriptive names (e.g. 'app_button_loading_state').
 /// 4. Layout: Max 3 columns in the GoldenTestGroup.
-/// 5. Devices: Samsung S8 and Samsung S23 Ultra.
+/// 5. Sizing: Natural UI sizing, no restricted bounds.
 void main() {
   group('AppButton Golden Tests', () {
     goldenTest(
@@ -34,20 +34,11 @@ void main() {
       ),
     );
 
-    // Multi-device testing using Alchemist's constraints
-    // Rule: fileName must be '<device_name>/<granular_name>'
+    // Single variant testing with natural sizing
     goldenTest(
-      'Samsung S8 Verification',
-      fileName: 's8/app_button_responsive',
-      constraints: const BoxConstraints(maxWidth: 360, maxHeight: 740),
-      builder: () => const AppButton(text: 'Responsive S8'),
-    );
-
-    goldenTest(
-      'Samsung S23 Ultra Verification',
-      fileName: 's23_ultra/app_button_responsive',
-      constraints: const BoxConstraints(maxWidth: 384, maxHeight: 854),
-      builder: () => const AppButton(text: 'Responsive S23 Ultra'),
+      'AppButton Natural Sizing',
+      fileName: 'app_button_natural_sizing',
+      builder: () => const AppButton(text: 'Natural Size Button'),
     );
   });
 }
