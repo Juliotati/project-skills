@@ -17,7 +17,8 @@ The `golden-eye` skill establishes a standardized directory and file-naming conv
 4. **Layout:** 3-column max grid in `GoldenTestGroup`.
 5. **Devices:** Samsung S8 and Samsung S23 Ultra coverage.
 6. **Subfolders:** Organize golden files as `<device_model>/<file_name>` for better folder organization.
+7. **Global Config:** Ensure every project defines `test/flutter_test_config.dart` using the standard mirroring and theme settings.
 
 ## Implementation Guide
 
-Refer to `SKILL.md` for the detailed specification and `examples/granular_golden_test_template.dart` for the implementation starter.
+Refer to `SKILL.md` for the detailed specification, `examples/granular_golden_test_template.dart` for the implementation starter, and `resources/flutter_test_config.dart` for the global configuration resource.

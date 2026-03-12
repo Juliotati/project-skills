@@ -46,5 +46,14 @@ To keep golden files organized across multiple device profiles, use a subfolder 
 - **Reasoning:** This keeps different device outputs in separate directories within the `goldens/` folder, preventing clutter and making visual diffing easier.
 - **Example:** `fileName: 's8/discussion_post_without_media'`
 
-## 7. Template Reference
-Always refer to the "Granular Golden Test" template in `examples/granular_golden_test_template.dart` when creating new golden tests to ensure compliance with this naming and organization pattern.
+## 7. Global Golden Configuration
+All projects using this skill must define a `test/flutter_test_config.dart` to standardize the **Alchemist** execution environment.
+- **Rule:** Use the provided generic configuration to enforce automatic mirroring, theme consistency, and storage mocking.
+- **Example Implementation:**
+  - Locate the configuration in `resources/flutter_test_config.dart`.
+  - Copy it into the root of the project's `test/` directory.
+
+## 8. Template Reference
+Always refer to the following when creating new golden tests:
+- **Test Template:** `examples/granular_golden_test_template.dart`.
+- **Global Config:** `resources/flutter_test_config.dart`.
