@@ -4,13 +4,13 @@ A collection of AI-ready skills designed to automate and enforce high-quality So
 
 ## 🛠 Available Skills
 
-### 1. [Feature Structure (Clean Architecture)](./feature-structure)
+### 1. [Feature Structure (Clean Architecture)](./skills/feature-structure)
 Enforces a "Feature-first" layered architecture. It utilizes the "Stitch" pattern to maintain clean namespaces while ensuring strict separation of concerns.
 * **Core Pattern:** Uses Dart `library` and `part/part of` directives.
 * **Layering:** Separates code into Data (Sources/Models), Domain (Contracts), and Presentation (Providers/Screens).
 * **Model Isolation:** Keeps generated `.freezed.dart` and `.g.dart` files in dedicated sub-folders to prevent directory clutter.
 
-### 2. [Code Quality (Flutter/Dart)](./code-quality)
+### 2. [Code Quality (Flutter/Dart)](./skills/code-quality)
 Ensuring readability, scalability, and performance by enforcing strict widget decomposition and linting rules.
 * **Linter Backbone:** Strictly adheres to the project's `analysis_options.yaml`.
 * **Widget Standards:** Mandates concrete classes over helper functions and enforces a 200-line refactor threshold.
@@ -21,6 +21,12 @@ Standardizes directory-mirrored golden testing with multi-device verification an
 * **Testing Standard:** Enforces a 1:1 relationship between `lib/` and `test/` paths.
 * **Granular Verification:** Splits complex widgets into distinct variations for clear visual diffing.
 * **Centralized Config:** Provides a standard `flutter_test_config.dart` for automated mirroring and storage mocking.
+
+### 4. [GH PM (GitHub Project Management)](./skills/gh-pm)
+Generates a comprehensive backlog of GitHub Issues natively, enforcing the Epic -> Story -> Task hierarchy as a Senior PM and Lead Engineer.
+* **Native Hierarchy:** Enforces Epic -> Story -> Task hierarchy via native GitHub sub-issues.
+* **Issue Linking:** Uses GitHub GraphQL API `addSubIssue` mutation for clean semantic tracking.
+* **Project Centralization:** Drives priority and estimates via the Project Board instead of inline labels or checklists.
 
 ## 🚀 How to Use
 

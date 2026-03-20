@@ -22,9 +22,10 @@ Enforce a strict 3-level parent-child-grandchild hierarchy natively via GitHub S
 - *Note*: If you attempt to link an issue that is already linked, GitHub will throw a validation error ("duplicate sub-issues"). It is safe to ignore this error if you are just re-verifying links.
 - DO NOT add text references (e.g., "**Epic:** #X") inside the sub-issue's description. The native parent-child linking UI is enough.
 
-### 3. Labels
+### 3. Labels & Project Fields
 Use existing labels when labeling issues. If the appropriate labels are missing, you can create them. 
-- **Crucial**: Avoid naming labels with descriptors like "P0 (critical)". Instead, the label should strictly be the priority level, such as "P0", "P1", or "P2".
+- **NO Priority Labels**: DO NOT use priority labels (e.g., "P0", "P1") on the issues themselves. 
+- **Project Centralization**: Priority, Size, Estimate, and Iterations MUST be set natively inside the GitHub Project board custom fields, as the Project serves as the central source of truth.
 
 ### 4. Issue Titles
 - NEVER use special characters in issue titles (other than the `[EPIC]` or `[STORY]` tags).
