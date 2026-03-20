@@ -21,6 +21,7 @@ Enforce a strict 3-level parent-child-grandchild hierarchy natively via GitHub S
 - **Linking IDs**: The `addSubIssue` mutation requires the global GraphQL `node_id` (e.g., `I_kwDORpt...`), NOT the standard issue number (`#12`). You MUST retrieve the GraphQL `node_id` for both the parent and child immediately after creating them in order to link them.
 - *Note*: If you attempt to link an issue that is already linked, GitHub will throw a validation error ("duplicate sub-issues"). It is safe to ignore this error if you are just re-verifying links.
 - DO NOT add text references (e.g., "**Epic:** #X") inside the sub-issue's description. The native parent-child linking UI is enough.
+- **Task Descriptions**: If there is no specific information or technical spec available for a Task, leave its description COMPLETELY EMPTY. Do NOT use placeholder text like "Task for Story #X".
 
 ### 3. Labels & Project Fields
 Use existing labels when labeling issues. If the appropriate labels are missing, you can create them. 
@@ -28,6 +29,7 @@ Use existing labels when labeling issues. If the appropriate labels are missing,
 - **Project Centralization**: Priority, Size, Estimate, and Iterations MUST be set natively inside the GitHub Project board custom fields, as the Project serves as the central source of truth.
 
 ### 4. Issue Titles
-- NEVER use special characters in issue titles (other than the `[EPIC]` or `[STORY]` tags).
+- NEVER use special characters in issue titles (other than the `[EPIC]`, `[STORY]` or `[TASK]` tags).
 - Do NOT use characters like `.`, `,`, brackets `[]` (except for the required tags), or braces `{}` in issue titles.
 - Avoid any characters that will or might cause issues with git version control branch naming conventions.
+- Instead of using double quotes (`"`) around specific terms, feature names, or values in issue titles, ALWAYS use backticks (\` \`).
