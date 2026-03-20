@@ -17,6 +17,7 @@ Generate a comprehensive backlog of GitHub Issues for the project.
    - To natively link sub-issues, strictly use the GitHub GraphQL API `addSubIssue` mutation via `gh api graphql`.
    - The `addSubIssue` mutation requires the global GraphQL `node_id` (e.g., `I_kwDORpt...`), NOT the standard issue number (`#12`). You MUST retrieve the GraphQL `node_id` for both the Epic and Sub-Issue immediately after creating them in order to link them.
    - *Note*: If you attempt to link an issue that is already linked, GitHub will throw a validation error ("duplicate sub-issues"). It is safe to ignore this error if you are just re-verifying links.
+   - DO NOT add text references (e.g., "**Epic:** #X") inside the sub-issue's description. The native parent-child linking UI is enough.
 4. **Issue Titles**: 
    - NEVER use special characters in issue titles.
    - Do NOT use characters like `.`, `,`, brackets `[]`, or braces `{}` in issue titles.
