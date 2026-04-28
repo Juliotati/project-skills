@@ -4,7 +4,7 @@ part '{{model_name}}_model.freezed.dart';
 part '{{model_name}}_model.g.dart';
 
 @freezed
-class {{model_name_pascal}}Model with _${{model_name_pascal}}Model {
+sealed class {{model_name_pascal}}Model with _${{model_name_pascal}}Model {
   const factory {{model_name_pascal}}Model({
     required String id,
   }) = _{{model_name_pascal}}Model;
