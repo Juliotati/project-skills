@@ -40,12 +40,15 @@ lib/features/
     │       └── <feature_name>_repo.dart      — Contract (part of '../../<feature_name>.dart')
     └── presentation/
         ├── providers/
-        │   └── <feature_name>_provider.dart  (part of '../../<feature_name>.dart')
+        │   └── <feature_name>_provider.dart (Independent, NOT a part file)
         ├── screen/
-        │   └── <screen_name>_folder/         — Dedicated screen folder
+        │   └── <screen_name>/         — Dedicated screen folder
         │       └── <screen_name>_screen.dart (part of '../../<feature_name>.dart')
         └── widgets/
-            ├── <widget_group_folder>/        — Dedicated folder for complex UI
-            └── <shared_widget>.dart          (part of '../../<feature_name>.dart')
+            ├── <bigger_widget>/        — Dedicated folder for complex UI
+                └── <bigger_widget>_title.dart (part of '../../<feature_name>.dart')
+                └── <bigger_widget>_description.dart (part of '../../<feature_name>.dart')
+            └── <widget_1>.dart          (part of '../../<feature_name>.dart')
+            └── <widget_2>.dart          (part of '../../<feature_name>.dart')
 
 ```
