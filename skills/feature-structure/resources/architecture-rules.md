@@ -42,7 +42,7 @@ lib/features/
         ├── providers/
         │   └── <feature_name>_provider.dart (Independent, NOT a part file)
         ├── screens/
-        │   └── <screen_name>/         — Dedicated screen folder
+        │   └── <screen_name>_screen/         — Dedicated screen folder
         │       ├── <screen_name>_screen.dart (part of '../../../<feature_name>.dart')
         │       └── widgets/           — Screen-specific widgets
         │           └── <screen_name>_body.dart (part of '../../../../<feature_name>.dart')
