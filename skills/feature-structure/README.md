@@ -8,4 +8,5 @@ npx skills add Juliotati/project-skills --skill feature-structure
 
 Prompt Example:
 
-> "Create a new feature called 'Profile' using the feature-structure skill. Use Provider for state management and include a User model."
+> "Create a new feature called 'Profile' using the feature-structure skill. Use Provider for state
+> management and include a User model."
