@@ -1,84 +1,51 @@
 ---
 name: golden-eye
-description: Standardizes Flutter golden tests with mirroring rules and granular naming for high-fidelity UI verification.
-author: Juliotati
-version: 1.1.0
-framework: flutter
-tags: [ testing, golden-test, ui-verification, design ]
+description: Standardizes Flutter golden tests with mirroring rules and granular naming for high-fidelity UI verification. Use when creating, naming, or organizing Flutter golden tests.
 ---
 
-# SKILL: Golden Eye (Test Organization & Naming)
+# Golden Eye
 
-## Objective
+Standardized directory and naming conventions for high-fidelity Flutter golden tests.
 
-Establish a standardized directory and file-naming convention for all Flutter golden tests in the
-project. Ensure high-granularity visual verification by mirroring the source structure and
-separating variants.
+## Quick start
 
-## 1. Directory Mirroring Rule
+```dart
+// test/core/widgets/app_button_golden_test.dart (Mirrors lib/)
+void main() {
+  group('AppButton Golden Tests', () {
+    goldenTest(
+      'AppButton Granular Variants',
+      fileName: 'app_button_variants',
+      builder: () => GoldenTestGroup(
+        columns: 3,
+        children: [
+          GoldenTestScenario(name: 'Normal', child: AppButton(text: 'Submit')),
+          GoldenTestScenario(name: 'Loading', child: AppButton(text: 'Wait', isLoading: true)),
+        ],
+      ),
+    );
+  });
+}
+```
 
-Every golden test file must reside in a `test/` directory path that exactly mirrors its `lib/`
-counterpart.
+## Workflows
 
-- **Rule:** `lib/path/to/widget.dart` -> `test/path/to/widget_golden_test.dart`
-- **Example:** `lib/core/presentation/widgets/app_tile.dart` must have a corresponding test at
-  `test/core/presentation/widgets/app_tile_golden_test.dart`.
+### 1. Mirroring & Naming
+- [ ] Create test at `test/path/to/widget_golden_test.dart` mirroring `lib/`.
+- [ ] If >2 visual variations exist, split into dedicated files (e.g., `feature_post_text_test.dart`).
+- [ ] Use descriptive output names (e.g., `discussion_post_without_location.png`).
 
-## 2. Multi-Variant Separation Rule
+### 2. Layout & Sizing
+- [ ] Use `GoldenTestGroup` with a **3-column maximum** grid.
+- [ ] Use **Natural UI Sizing**: Do not use fixed device bounds; let the widget define its size.
+- [ ] Organize outputs in `local_goldens/` following the mirrored path.
 
-If a widget or feature has more than **2 distinct visual variations**, split them into dedicated
-files rather than one giant test file to avoid bloat and maintain clarity.
+### 3. Global Configuration
+- [ ] Ensure `test/flutter_test_config.dart` exists in the project root.
+- [ ] Copy the standard config from [resources/flutter_test_config.dart](resources/flutter_test_config.dart).
 
-- **Feature-based Split Example:**
-    - `feature/posts/presentation/widgets/text_post_golden_test.dart`
-    - `feature/posts/presentation/widgets/media_post_golden_test.dart`
+## Advanced features
 
-## 3. Granular Output Naming
+See [REFERENCE.md](REFERENCE.md) for detailed rules on variant separation and output organization.
+See [examples/granular_golden_test_template.dart](examples/granular_golden_test_template.dart) for a full implementation starter.
 
-Generated golden images must use descriptive, human-readable names specifying exactly what is being
-tested in that variation.
-
-- **Prohibited:** Generic names like `test_1.png`.
-- **Requirement:** Use specific descriptors.
-- **Example (Discussion Post variants):**
-    - `discussion_post_without_media.png`
-    - `discussion_post_without_location.png`
-    - `discussion_post_without_title.png`
-
-## 4. Golden Group Layout
-
-Within each test file, use a **3-column maximum grid layout** for variant comparison (implemented
-via `GoldenTestGroup` in **Alchemist**). This ensures the output is readable and consistent.
-
-## 5. Natural UI Sizing
-
-Tests should not use restricted bounds (e.g., fixed device profiles). Instead, they should allow the
-UI being tested to define its own width and height, ensuring the golden image captures the widget in
-its natural state.
-
-## 6. Output Folder Organization
-
-To keep golden files organized, the output golden file should follow the granular naming rule
-directly in the mirrored folder structure.
-
-- **Rule:** Mirror the directory structure in `local_goldens/` as defined in the global
-  configuration.
-- **Example:** `fileName: 'app_button_granular_variants'`
-
-## 7. Global Golden Configuration
-
-All projects using this skill must define a `test/flutter_test_config.dart` to standardize the *
-*Alchemist** execution environment.
-
-- **Rule:** Use the provided generic configuration to enforce automatic mirroring, theme
-  consistency, and storage mocking.
-- **Example Implementation:**
-    - Locate the configuration in `resources/flutter_test_config.dart`.
-    - Copy it into the root of the project's `test/` directory.
-
-## 8. Template Reference
-
-Always refer to the following when creating new golden tests:
-
-- **Test Template:** `examples/granular_golden_test_template.dart`.
-- **Global Config:** `resources/flutter_test_config.dart`.
