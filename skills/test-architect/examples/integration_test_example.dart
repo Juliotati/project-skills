@@ -30,7 +30,7 @@ void main() {
 
     test(
       'should update profile and persist locally using real repository',
-          () async {
+      () async {
         // 1. Arrange: Start with a 'guest' persona
         final initialUser = UserTFactory.guest;
         final updatedName = 'New Name';
