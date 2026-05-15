@@ -16,7 +16,7 @@ void main() {
 
     setUp(() async {
       // Setup real local dependencies and mock remote ones
-      await setupDependencies(
+      await setupTestDependencies(
         onSetup: () async {
           repo = TestDependency.userRepo();
           accessService = TestDependency.accessService();
@@ -28,27 +28,30 @@ void main() {
       await tearDownDependencies();
     });
 
-    test('should update profile and persist locally using real repository', () async {
-      // 1. Arrange: Start with a 'guest' persona
-      final initialUser = UserTFactory.guest;
-      final updatedName = 'New Name';
-      
-      // 2. Act: Use the real logic
-      await repo.updateName(initialUser.id, updatedName);
+    test(
+      'should update profile and persist locally using real repository',
+          () async {
+        // 1. Arrange: Start with a 'guest' persona
+        final initialUser = UserTFactory.guest;
+        final updatedName = 'New Name';
 
-      // 3. Assert: Verify the real local datasource was updated
-      final result = await repo.getUser(initialUser.id);
-      
-      expect(result.name, updatedName);
-      expect(result.isVerified, false); // Still a guest
-    });
+        // 2. Act: Use the real logic
+        await repo.updateName(initialUser.id, updatedName);
+
+        // 3. Assert: Verify the real local datasource was updated
+        final result = await repo.getUser(initialUser.id);
+
+        expect(result.name, updatedName);
+        expect(result.isVerified, false); // Still a guest
+      },
+    );
 
     test('admin user should have full access permissions', () async {
       // Use the 'admin' persona directly
       final admin = UserTFactory.admin;
-      
+
       final canDelete = accessService.canPerform(admin, 'delete_post');
-      
+
       expect(canDelete, isTrue);
     });
   });
@@ -59,10 +62,11 @@ final sl = GetIt.instance;
 
 class TestDependency {
   static UserRepository userRepo() => sl<UserRepository>();
+
   static AccessService accessService() => sl<AccessService>();
 }
 
-Future<void> setupDependencies({
+Future<void> setupTestDependencies({
   Map<String, Object> cache = const {},
   Future<void> Function()? onSetup,
 }) async {
@@ -76,18 +80,21 @@ Future<void> tearDownDependencies() async {
 
 class UserTFactory {
   static User get guest => User(id: '1', name: 'Guest', isVerified: false);
+
   static User get admin => User(id: '99', name: 'Admin', isVerified: true);
 }
 
 class User {
+  User({required this.id, required this.name, required this.isVerified});
+
   final String id;
   final String name;
   final bool isVerified;
-  User({required this.id, required this.name, required this.isVerified});
 }
 
 abstract class UserRepository {
   Future<void> updateName(String id, String name);
+
   Future<User> getUser(String id);
 }
 

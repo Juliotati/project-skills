@@ -35,27 +35,24 @@ We use a combination of `GetIt` for global registration and a `TestDependency` h
 3.  **Flexibility**: In projects without a "Use Case" layer, wire Repositories directly into State Management (Providers/BLoCs).
 
 ### `test/helpers/test_utils.dart`
+
 ```dart
 class TestDependency {
-  static SharedPreferences sharedPreferences() => sl<SharedPreferences>();
-  
-  // Explicitly build the repository with real local storage
-  static UserRepositoryImpl userRepo() => UserRepositoryImpl(
-    localDataSource: RealLocalDS(sharedPreferences()),
-    remoteDataSource: sl<FirestoreService>(), // This is mocked via GetIt
-  );
-
-  static UserProvider userProvider() => UserProvider(userRepo());
+  // Always use the global 'sl'
+  static UserRepository organizationRepository() => sl<UserRepository>();
+  static OrganizationEditorProvider organizationEditorProvider() => sl<OrganizationEditorProvider>();
 }
 
 Future<void> setupDependencies({
   Map<String, Object> cache = const {},
-  FutureOr<void> Function()? onSetup,
+  Future Function()? onSetup,
 }) async {
+  GetIt.instance.skipDoubleRegistration = true;
+  TestWidgetsFlutterBinding.ensureInitialized();
   SharedPreferences.setMockInitialValues(cache);
-  await setupGetIt(env: Environment.test);
-  sl.skipDoubleRegistration = true;
-  if (onSetup != null) await onSetup();
+
+  await setupGetIt(Environment.test);
+  await onSetup?.call();
 }
 
 Future<void> tearDownDependencies() async {

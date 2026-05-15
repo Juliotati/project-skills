@@ -16,9 +16,14 @@ void main() {
     late UserProvider provider;
 
     setUp(() async {
+      // setupDependencies handles the core DI. onSetup is only for extra test-specific tasks.
       await setupDependencies(
         onSetup: () async {
+          // 1. Always get dependencies from TestDependency
           provider = TestDependency.userProvider();
+          
+          // 2. Pre-load data if needed
+          await provider.fetchUser();
         },
       ); 
     });
@@ -28,14 +33,7 @@ void main() {
     });
 
     test('should update state with user from real local storage', () async {
-      // 1. Use TFactory for semantic test data
-      final mockUser = UserTFactory.active;
-      
-      // 2. Act
-      await provider.fetchUser();
-      
-      // 3. Assert
-      expect(provider.state.user, mockUser);
+      expect(provider.state.user, isNotNull);
     });
   });
 }
@@ -50,16 +48,18 @@ void main() {
     - Redundant coverage of already tested logic.
 - [ ] **Propose**: Present a **Technical Proposal** to the user justifying the test plan.
 
-### 2. Dependency Injection (TestDependency)
-- [ ] **Setup/Teardown**: Ensure `test/helpers/test_utils.dart` exists with `setupDependencies()` and `tearDownDependencies()`.
-- [ ] **Infrastructure**: Use the **TestDependency** utility class to retrieve or manually wire components.
-    - Wire **real** local data sources into repositories.
-    - Provide **mocks** for remote boundaries (Firebase/Analytics) using `@Injectable(env: [test])`.
-- [ ] **Flexibility**: If the project lacks a Use Case layer, wire Repositories directly into Providers.
+### 2. Dependency Injection & Global State
+- [ ] **STRICT: No `sl` definitions**: Never write `final sl = GetIt.instance` or `GetIt.I`. Use the global `sl` directly.
+- [ ] **STRICT: Dependency Origin**: All dependencies must come from `TestDependency`. 
+    - If a getter is missing in `TestDependency`, your first task is to add it there.
+- [ ] **STRICT: No Ad-hoc Mocks**: Do not register mocks/providers inside `onSetup` unless it is a unique, one-off requirement for that specific test case. Use the real implementations registered in `setupGetIt`.
+- [ ] **STRICT: setupDependencies**: Use the exact implementation provided in [REFERENCE.md](REFERENCE.md).
 
-### 3. Implementation & UI
-- [ ] **Realism**: Use real Repositories and BLoCs where possible.
-- [ ] **Golden-eye**: If the feature has UI, automatically trigger the [golden-eye](../golden-eye/SKILL.md) skill workflow.
+### 3. Implementation & Audit
+- [ ] **Audit Step**: Before finishing, read the generated test and ensure:
+    - [ ] No `GetIt.instance` or `sl` assignments.
+    - [ ] No `onSetup` used for core DI registration.
+    - [ ] No `MockRepository` created for components that should be "Real".
 
 ### 4. Failure Protocol
 - [ ] **Report**: If a test fails, analyze if the bug is in the test or a real dependency.
