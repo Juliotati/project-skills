@@ -1,51 +1,63 @@
 ---
 name: code-quality
-description: Enforces high-standard Flutter/Dart patterns focusing on widget decomposition, parameter management, and strict linter adherence.
+description: Enforces high-standard Flutter/Dart patterns focusing on widget decomposition, parameter management, and strict linter adherence. Use when refactoring widgets, optimizing rebuilds, managing function/widget parameter limits, or validating Dart linter rules.
 author: Juliotati
 version: 1.0.0
 framework: flutter
 tags: [ quality, refactoring, performance, linting ]
 ---
 
-# SKILL: Code Quality (Flutter/Dart)
+# Code Quality
 
-## Context
+Enforces high-standard Flutter/Dart patterns focusing on widget decomposition, parameter management, and strict linter adherence.
 
-You are a Lead Software Engineer. Your goal is to ensure the codebase is readable, scalable, and
-performant. You must prioritize "Divide and Conquer" strategies for UI and strict adherence to
-project-level linting.
+## Quick start
 
-## 1. The Backbone: analysis_options.yaml
+Instead of large, multi-parameter widget trees with helper functions, prefer concrete, const-constructible widgets with parameter objects:
 
-- **Strict Adherence:** The `analysis_options.yaml` file at the project root MUST be respected and
-  followed ALWAYS.
-- **Enforcement:** If the file is missing, explicitly suggest the developer creates it to ensure
-  project-wide consistency and prevent formatting issues.
+```dart
+// ❌ BAD: Helper functions and too many parameters
+Widget build(BuildContext context) {
+  return Column(
+    children: [
+      _buildHeader(context, title, subtitle, imageUrl, isEnabled, onAction, userRole),
+    ],
+  );
+}
 
-## 2. Widget Architecture logic
+// ✅ GOOD: Concrete Widget with parameter object
+Widget build(BuildContext context) {
+  return const Column(
+    children: [
+      HeaderWidget(config: HeaderConfig(title: title, subtitle: subtitle)),
+    ],
+  );
+}
+```
 
-- **Concrete Widgets over Functions:** Always prefer concrete widget classes (Stateless/Stateful)
-  over helper functions (e.g., `_buildWidget()`).
-- **Divide and Conquer:** Avoid a LONG widget tree from a single widget; break it down into smaller,
-  manageable pieces.
-- **Reuse:** Always create pieces to be used in other widgets to reduce the size of any single
-  widget.
-- **The 200-Line Rule:** Any widget with more than 200 total lines of code requires a refactor to
-  split and conquer.
+## Workflows
 
-## 3. Performance & Logic
+### 1. Linter Adherence & Backbone
+- [ ] **Linter Configuration**: Ensure `analysis_options.yaml` exists at the project root and is strictly followed.
+- [ ] **Validation**: If `analysis_options.yaml` is missing, suggest creating it using the [analysis_options_template.yaml](resources/analysis_options_template.yaml) template.
+- [ ] **Script Check**: Run the validation script `sh scripts/validate_lints.sh` to check linter presence.
 
-- **Rebuild Optimization:** Avoid causing rebuilds of widgets that don’t need to rebuild just
-  because an adjacent widget changed.
-- **State Management:** Use `Provider` to pass state down the tree when it is needed frequently 1+
-  layer down.
-- **Logic Separation:** Use controllers to separate UI from the logic that UI should react on (e.g.,
-  for page/step indicators).
+### 2. Widget Architecture & Decomposition ("Divide and Conquer")
+- [ ] **Concrete Widgets**: Always prefer concrete widget classes (`StatelessWidget`/`StatefulWidget`) over helper functions (e.g., `_buildWidget()`).
+- [ ] **200-Line Limit**: Any widget file or class exceeding 200 lines must be refactored and split into smaller pieces.
+- [ ] **Indentation Limit**: If a build method has more than 5 levels of indentation, extract sub-widgets.
+- [ ] **Rebuild Isolation**: Extract highly-dynamic or localized state widgets to isolate rebuilds and prevent adjacent tree updates.
 
-## 4. Function & Parameter Standards
+### 3. Function & Parameter Standards
+- [ ] **Named Parameters**: Use named parameters when dealing with more than 1 parameter.
+- [ ] **Parameter Limits**: Max 5 parameters for functions, and max 7 parameters for custom widgets.
+- [ ] **Data Grouping**: If parameter limits are exceeded, group related fields into a single data class/model and pass that class instance instead.
 
-- **Named Parameters:** Always use named parameters when dealing with more than 1 parameter.
-- **Function Limit:** Avoid more than 5 parameters in functions.
-- **Widget Limit:** Avoid more than 7 parameters in custom widgets.
-- **Grouping:** Prefer grouping related data into a class and passing the class instead of
-  individual parameters when limits are exceeded.
+### 4. Logic & State Management
+- [ ] **State Separation**: Use `Provider` to pass state down the tree if needed 1+ layer deep instead of drilling props.
+- [ ] **UI/Logic Isolation**: Use controllers to separate UI layout from reactive logic (e.g., step indicators, animation controllers).
+
+## Advanced features
+
+- See [resources/quality-rules.md](resources/quality-rules.md) for deeper explanation on parameter grouping and rebuilding optimization.
+- See [examples/refactor-demo.md](examples/refactor-demo.md) for step-by-step refactoring demonstration from helper functions to concrete widgets.
