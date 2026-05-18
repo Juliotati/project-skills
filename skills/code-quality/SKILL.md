@@ -1,35 +1,44 @@
 ---
 name: code-quality
-description: Enforces high-standard Flutter/Dart patterns focusing on widget decomposition, parameter management, and strict linter adherence. Use when refactoring widgets, optimizing rebuilds, managing function/widget parameter limits, or validating Dart linter rules.
+description: Enforces high-standard Flutter/Dart patterns focusing on widget decomposition, parameter management, strict styling standards, and linter adherence. Use when refactoring widgets, optimizing themes/rebuilds, or validating Dart code quality rules.
 author: Juliotati
-version: 1.0.0
+version: 1.1.0
 framework: flutter
-tags: [ quality, refactoring, performance, linting ]
+tags: [ quality, refactoring, performance, linting, theming ]
 ---
 
 # Code Quality
 
-Enforces high-standard Flutter/Dart patterns focusing on widget decomposition, parameter management, and strict linter adherence.
+Enforces high-standard Flutter/Dart patterns focusing on widget decomposition, parameter management, strict styling standards, and linter adherence.
 
 ## Quick start
 
 Instead of large, multi-parameter widget trees with helper functions, prefer concrete, const-constructible widgets with parameter objects:
 
 ```dart
-// ❌ BAD: Helper functions and too many parameters
+// ❌ BAD: Helper functions, hardcoded colors, and too many parameters
 Widget build(BuildContext context) {
   return Column(
     children: [
       _buildHeader(context, title, subtitle, imageUrl, isEnabled, onAction, userRole),
+      Container(color: Colors.blue, child: const Text('Direct styling')),
     ],
   );
 }
 
-// ✅ GOOD: Concrete Widget with parameter object
+// ✅ GOOD: Concrete Widget, parameter object, and correct BuildContext/style extensions
 Widget build(BuildContext context) {
-  return const Column(
+  return Column(
     children: [
-      HeaderWidget(config: HeaderConfig(title: title, subtitle: subtitle)),
+      const HeaderWidget(config: HeaderConfig(title: title, subtitle: subtitle)),
+      Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: context.colorScheme.primary,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: const Text('Styled with theme colors'),
+      ),
     ],
   );
 }
@@ -40,7 +49,9 @@ Widget build(BuildContext context) {
 ### 1. Linter Adherence & Backbone
 - [ ] **Linter Configuration**: Ensure `analysis_options.yaml` exists at the project root and is strictly followed.
 - [ ] **Validation**: If `analysis_options.yaml` is missing, suggest creating it using the [analysis_options_template.yaml](resources/analysis_options_template.yaml) template.
-- [ ] **Script Check**: Run the validation script `sh scripts/validate_lints.sh` to check linter presence.
+- [ ] **Post-Change Tasks**: After every code change, always run:
+  - `dart format --line-length 80 .`
+  - `dart fix --apply --code=directives_ordering,unused_import`
 
 ### 2. Widget Architecture & Decomposition ("Divide and Conquer")
 - [ ] **Concrete Widgets**: Always prefer concrete widget classes (`StatelessWidget`/`StatefulWidget`) over helper functions (e.g., `_buildWidget()`).
@@ -53,9 +64,17 @@ Widget build(BuildContext context) {
 - [ ] **Parameter Limits**: Max 5 parameters for functions, and max 7 parameters for custom widgets.
 - [ ] **Data Grouping**: If parameter limits are exceeded, group related fields into a single data class/model and pass that class instance instead.
 
-### 4. Logic & State Management
+### 4. UI & Implementation Standards
+- [ ] **No Logic in Widgets**: Never keep business or layout logic inside widgets. Delegate all logic to providers or controllers.
+- [ ] **Theme Legibility**: Enforce theme legibility across light and dark modes strictly via `lib/core/theme`.
+- [ ] **Styling Extensions**: Utilize styling extensions in `lib/core/extensions` and theme extensions in `lib/core/theme/theme_extensions.dart`.
+- [ ] **No Hardcoding**: DO NOT hardcode styling values outside theme definitions (e.g., avoid `Colors.blue` or hardcoded fonts).
+- [ ] **Modern Dart Shorthands**: Implement modern Dart shorthand syntax on classes that support them (e.g., `.center`, `.circular(8)`) across the codebase.
+
+### 5. Logic & State Management
+- [ ] **Flat Logic**: Avoid nested checks. Refactor deep nesting by using early returns (guard clauses) or consistent design patterns (e.g., state, strategy).
+- [ ] **No Provider Injection**: A provider MUST NEVER be injected into another provider to prevent tight coupling.
 - [ ] **State Separation**: Use `Provider` to pass state down the tree if needed 1+ layer deep instead of drilling props.
-- [ ] **UI/Logic Isolation**: Use controllers to separate UI layout from reactive logic (e.g., step indicators, animation controllers).
 
 ## Advanced features
 
