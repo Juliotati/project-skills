@@ -32,10 +32,10 @@ Widget build(BuildContext context) {
     children: [
       const HeaderWidget(config: HeaderConfig(title: title, subtitle: subtitle)),
       Container(
-        padding: const EdgeInsets.all(8),
+        padding: const .all(8),
         decoration: BoxDecoration(
           color: context.colorScheme.primary,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: .circular(8),
         ),
         child: const Text('Styled with theme colors'),
       ),
@@ -50,8 +50,10 @@ Widget build(BuildContext context) {
 - [ ] **Linter Configuration**: Ensure `analysis_options.yaml` exists at the project root and is strictly followed.
 - [ ] **Validation**: If `analysis_options.yaml` is missing, suggest creating it using the [analysis_options_template.yaml](resources/analysis_options_template.yaml) template.
 - [ ] **Post-Change Tasks**: After every code change, always run:
+  - `dart analyze`
   - `dart format --line-length 80 .`
   - `dart fix --apply --code=directives_ordering,unused_import`
+  - `dart run build_runner build --delete-conflicting-outputs`
 
 ### 2. Widget Architecture & Decomposition ("Divide and Conquer")
 - [ ] **Concrete Widgets**: Always prefer concrete widget classes (`StatelessWidget`/`StatefulWidget`) over helper functions (e.g., `_buildWidget()`).
@@ -60,8 +62,22 @@ Widget build(BuildContext context) {
 - [ ] **Rebuild Isolation**: Extract highly-dynamic or localized state widgets to isolate rebuilds and prevent adjacent tree updates.
 
 ### 3. Function & Parameter Standards
-- [ ] **Named Parameters**: Use named parameters when dealing with more than 1 parameter.
-- [ ] **Parameter Limits**: Max 5 parameters for functions, and max 7 parameters for custom widgets.
+- [ ] **Widget Named Parameters**: Use named parameters for widget constructors when dealing with more than 1 parameter.
+- [ ] **Positional Constructors for Providers & Below**: Providers, repositories, data sources, and services MUST use **positional** constructor parameters — not named. Dependencies are injected and self-documenting by type.
+  ```dart
+  // ❌ BAD: Named parameters in provider constructor
+  ProfileEditorProvider({
+    required UserProfileModel initialProfile,
+    required UserRepository userRepository,
+  });
+
+  // ✅ GOOD: Positional parameters in provider constructor
+  ProfileEditorProvider(
+    UserProfileModel initialProfile,
+    this._userRepository,
+  );
+  ```
+- [ ] **Parameter Limits**: Max 5 parameters for functions, and max 7 parameters for custom widgets. **Exception**: Classes that rely on heavy dependency injection (e.g. `RepositoryImpl`, `DataSourceImpl`) may exceed this limit.
 - [ ] **Data Grouping**: If parameter limits are exceeded, group related fields into a single data class/model and pass that class instance instead.
 
 ### 4. UI & Implementation Standards
@@ -69,8 +85,8 @@ Widget build(BuildContext context) {
 - [ ] **Theme Legibility**: Enforce theme legibility across light and dark modes strictly via `lib/core/theme`.
 - [ ] **Styling Extensions**: Utilize styling extensions in `lib/core/extensions` and theme extensions in `lib/core/theme/theme_extensions.dart`.
 - [ ] **No Hardcoding**: DO NOT hardcode styling values outside theme definitions (e.g., avoid `Colors.blue` or hardcoded fonts).
-- [ ] **Modern Dart Shorthands**: Implement modern Dart shorthand syntax on classes that support them (e.g., `.center`, `.circular(8)`) across the codebase.
-
+- [ ] **Dart Shorthands**: USING Dart shorthand syntax on classes and enums IS A MUST (e.g., `.center`, `.circular(8)` etc) across the codebase.
+- [ ] **Navigation**: EXCLUSIVELY use go_router (e.g., `context.push()`, `context.go()`, `context.pop()`) for all navigation. DO NOT use standard navigation methods like `Navigator.of(context).push()`, `Navigator.of(context).pop()`, or `Navigator.push()`. All screens, dialogs, and views must be defined in `app_router.dart`.
 ### 5. Logic & State Management
 - [ ] **Flat Logic**: Avoid nested checks. Refactor deep nesting by using early returns (guard clauses) or consistent design patterns (e.g., state, strategy).
 - [ ] **No Provider Injection**: A provider MUST NEVER be injected into another provider to prevent tight coupling.
